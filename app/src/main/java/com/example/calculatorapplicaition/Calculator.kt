@@ -68,7 +68,7 @@ fun Calculator (
                 )
 
                 CalculatorButton (
-                    symbol = "Del",
+                    symbol = "<",
                     modifier = Modifier
                         .background(LightGrey)
                         .aspectRatio(1f)
@@ -280,6 +280,25 @@ fun Calculator (
                         .weight(1f),
                     onClick = {
                         onAction(CalculatorActions.Calculate)
+                    }
+                )
+
+            }
+
+            //SIXTH_ROW_OF_THE_INTERFACE
+            Row (
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(buttonSpacing)
+            ) {
+                CalculatorButton (
+                    symbol = "√",
+                    modifier = Modifier
+                        .background(Teal200)
+                        .aspectRatio(4f)
+                        .weight(4f),
+                    onClick = {
+                        onAction(CalculatorActions.Square)
                     }
                 )
 

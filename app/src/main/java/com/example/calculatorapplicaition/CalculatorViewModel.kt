@@ -4,10 +4,28 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import kotlin.math.sqrt
 
 class CalculatorViewModel : ViewModel() {
     var state by mutableStateOf(CalculatorState())
         private set
+
+    private fun performSquareRoot() {
+        val number1 = state.number1.toDoubleOrNull()
+
+        if (number1 != null && number1 >= 0) {
+            val result = sqrt(number1)
+            state = state.copy(
+                number1 = result.toString().take(8),
+                number2 = "",
+                operation = null
+            )
+        } else {
+            state = CalculatorState()
+            println("ERROR")
+        }
+    }
+
 
     fun onAction(action: CalculatorActions) {
         when (action) {
@@ -17,10 +35,12 @@ class CalculatorViewModel : ViewModel() {
             is CalculatorActions.Operation -> enterOperation(action.operations)
             is CalculatorActions.Calculate -> performCalculation()
             is CalculatorActions.Delete -> performDeletion()
+            is CalculatorActions.Square -> performSquareRoot()
 
         }
 
     }
+
 
     private fun enterOperation(operation: CalculatorOperation) {
         if(state.number1.isNotBlank()) {
@@ -88,6 +108,7 @@ class CalculatorViewModel : ViewModel() {
                 is CalculatorOperation.Subtract -> number1 - number2
                 is CalculatorOperation.Multiply -> number1 * number2
                 is CalculatorOperation.Divide -> number1 / number2
+                is CalculatorOperation.Square -> sqrt(number1)
 
                 null -> return
 
@@ -100,6 +121,7 @@ class CalculatorViewModel : ViewModel() {
             )
         }
     }
+
 
     companion object {
         private const val MAX_NUM_LENGTH = 8
